@@ -1,0 +1,8 @@
+CREATE VIEW album_track_count AS
+	SELECT
+		album_id,
+		COUNT(track_id) track_count
+	FROM
+		track
+	GROUP BY
+		album_id

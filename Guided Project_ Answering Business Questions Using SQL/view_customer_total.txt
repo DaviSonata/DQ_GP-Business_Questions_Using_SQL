@@ -1,0 +1,9 @@
+CREATE VIEW customer_total AS
+	SELECT
+		customer_id,
+		SUM(total) total_customer,
+		COUNT(*) num_orders
+	FROM
+		invoice
+	GROUP BY
+		customer_id;

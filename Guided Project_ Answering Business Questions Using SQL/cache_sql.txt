@@ -1,0 +1,9 @@
+SELECT
+	I.invoice_id,
+	COUNT(IL.track_id) track_count
+FROM
+	invoice I JOIN
+	invoice_line IL ON I.invoice_id = IL.invoice_id
+GROUP BY
+	I.invoice_id
+

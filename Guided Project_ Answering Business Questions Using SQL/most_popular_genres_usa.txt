@@ -1,0 +1,22 @@
+SELECT
+	sum(ILTOT.sale_price) as genre_sell,
+	G.name genre
+FROM
+	(
+	SELECT
+		(unit_price * quantity) sale_price,
+		invoice_line_id,
+		invoice_id,
+		track_id
+	FROM
+		invoice_line
+	) ILTOT JOIN
+	track T ON ILTOT.track_id = T.track_id JOIN
+	genre G ON T.genre_id = G.genre_id JOIN
+	invoice I ON I.invoice_id = ILTOT.invoice_id JOIN
+	customer C ON C.customer_id = I.customer_id
+WHERE
+	C.country = 'USA'
+GROUP BY
+	genre
+ORDER BY 1 DESC

@@ -1,0 +1,13 @@
+SELECT
+	E.first_name || " " || E.last_name employee_name,
+	E.title employee_title,
+	CAST((julianday(date('now')) - julianday(E.hire_date)) as float)/365 employee_experience_years,
+	sum(total) total_sales
+FROM
+	invoice I JOIN
+	customer C ON C.customer_id = I.customer_id JOIN
+	employee E ON E.employee_id = C.support_rep_id
+GROUP BY
+	E.employee_id
+ORDER BY
+	4 DESC

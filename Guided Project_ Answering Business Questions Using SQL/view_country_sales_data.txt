@@ -1,0 +1,15 @@
+CREATE VIEW country_sales_data AS
+	SELECT
+		C.country,
+		COUNT(C.customer_id) count_customers,
+		SUM(T.total_customer) total_country,
+		SUM(T.total_customer)/COUNT(C.customer_id) total_per_customer,
+		SUM(T.num_orders) count_orders,
+		SUM(T.total_customer)/SUM(T.num_orders) total_per_order
+	FROM
+		customer_country C JOIN
+		customer_total T ON C.customer_id = T.customer_id
+	GROUP BY
+		country
+	ORDER BY
+		CASE WHEN country = 'Other' THEN 0 ELSE total_country END DESC

@@ -1,0 +1,30 @@
+SELECT
+	T1.n_invoice_full_album,
+	CAST(T1.n_invoice_full_album as FLOAT)/CAST(T2.total_invoices as FLOAT)*100 percentage_of_album_invoices
+FROM
+	(
+	SELECT
+		COUNT(*) n_invoice_full_album
+	FROM
+		distinct_invoice_track_count DITC JOIN
+		album_track_count ATC ON ATC.album_id = DITC.album_id JOIN
+		(
+		SELECT
+			invoice_id,
+			sum(track_count) invoice_track_count
+		FROM
+			distinct_invoice_track_count
+		GROUP BY
+			invoice_id
+		)T1 ON DITC.invoice_id = T1.invoice_id
+	WHERE
+		DITC.track_count > 2 AND
+		DITC.track_count = ATC.track_count AND
+		DITC.track_count = T1.invoice_track_count
+	)T1,
+	(
+	SELECT
+		COUNT(*) total_invoices
+	FROM
+		invoice
+	)T2

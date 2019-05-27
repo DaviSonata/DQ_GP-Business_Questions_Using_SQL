@@ -1,0 +1,18 @@
+CREATE VIEW distinct_invoice_track_count AS
+	SELECT
+		T1.invoice_id,
+		T.album_id,
+		COUNT(T1.track_id) track_count
+	FROM
+		(
+		SELECT DISTINCT
+			I.invoice_id,
+			IL.track_id
+		FROM
+			invoice I JOIN
+			invoice_line IL ON I.invoice_id = IL.invoice_id
+		) T1 JOIN
+		track T ON T.track_id = T1.track_id
+	GROUP BY
+		T1.invoice_id,
+		T.album_id

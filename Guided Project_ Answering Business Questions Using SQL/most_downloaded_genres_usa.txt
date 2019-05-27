@@ -1,0 +1,14 @@
+SELECT
+	sum(IL.quantity) as genre_quantity,
+	G.name genre
+FROM
+	invoice_line IL JOIN
+	track T ON IL.track_id = T.track_id JOIN
+	genre G ON T.genre_id = G.genre_id JOIN
+	invoice I ON I.invoice_id = IL.invoice_id JOIN
+	customer C ON C.customer_id = I.customer_id
+WHERE
+	C.country = 'USA'
+GROUP BY
+	genre
+ORDER BY 1 DESC
